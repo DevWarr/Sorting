@@ -63,12 +63,64 @@ def merge_sort( arr ):
 def merge_in_place(arr, start, mid, end):
     # TO-DO
 
-    return arr
+    # =====================================
+    # Example
+    # [0, 2, 5, 7         1, 3, 4, 6]
+    #  ↑ start            ↑ mid       ↑ end
+    # 
+    # If start is less than mid, we're good.
+    # Increment start += 1
+    #
+    #
+    # [0, 2, 5, 7         1, 3, 4, 6]
+    #     ↑ start         ↑ mid      ↑ end
+    #
+    # If mid is less than start, we have to 
+    # bubble each number over, and then set
+    # arr[start] to the mid value
+    # Increment both mid and start up by one
+    # 
+    # [0, 1, 2, 5         7, 3, 4, 6]
+    #        ↑ start         ↑ mid   ↑ end
+    # And continue until either
+    #    - start equals mid(mid to the end is sorted)
+    #    - mid equals end(everything before is sorted)
+    #
+
+    while start < mid and mid < end:
+
+        if arr[mid] < arr[start]:
+            # If mid is greater than start,
+            # Bubble all values to the left
+            # and set start to mid's old value
+            temp = arr[mid]
+            for i in range(mid, start, -1):
+                arr[i] = arr[i-1]
+            arr[start] = temp
+            mid += 1
+        start +=1
+
+    return 
 
 def merge_sort_in_place(arr, l, r): 
     # TO-DO
+    if r == -1:
+        return 
 
-    return arr
+    # Base case: if l and r are the same, we have one number exactly
+    if r == l:
+        return 
+    elif r - l == 1:
+        merge_in_place(arr, l, r, r+1)
+        return 
+    else:
+        m = (r+l)//2
+
+        merge_sort_in_place(arr, l, m)
+        merge_sort_in_place(arr, m+1, r)
+        merge_in_place(arr, l, m+1, r+1)
+
+    return 
 
 
 # STRETCH: implement the Timsort function below
