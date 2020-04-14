@@ -14,7 +14,7 @@ def insertion_sort(arr):
     # [5,                       5, 7, 23, 8, 5, 3, 6, 4, 6]
     #
     # current_val = 4
-    #  ↓ becomes 4     
+    #  ↓ becomes 4
     # [4,                       5, 7, 23, 8, 5, 3, 6, 4, 6]
     #
     #
@@ -118,14 +118,14 @@ def insertion_sort(arr):
         current_val = arr[i]
         j = i
         while j > 0 and current_val < arr[j-1]:
-        # Loop through from our current value back to the beginning
-        # as long as our current value is less than our checking value,
-        # swapping ↓↓↓ our values as we go
+            # Loop through from our current value back to the beginning
+            # as long as our current value is less than our checking value,
+            # swapping ↓↓↓ our values as we go
             arr[j] = arr[j-1]
             j -= 1
         # Otherwise, set our current value at [j]
         arr[j] = current_val
-    
+
     return arr
 
 
@@ -169,5 +169,53 @@ def bubble_sort(arr):
 
 # STRETCH: implement the Count Sort function below
 def count_sort(arr, maximum=-1):
+    # Why do we need this 'maximum' value :eyes:
 
-    return arr
+    if len(arr) < 2:
+        # Array of 1 or fewer values? It's already sorted!
+        return arr
+
+    for i in range(0, len(arr)):
+        # Negative number? Error
+        if arr[i] < 0:
+            return "Error, negative numbers not allowed in Count Sort"
+        # Loop once to find our maximum value in the array
+        if maximum < arr[i]:
+            maximum = arr[i]
+
+    # Create our count array and fill
+    # the proper indices with the occurances of each
+    # array value
+    count_array = [0]*(maximum+1)
+    for i in range(0, len(arr)):
+        count_array[arr[i]] += 1
+
+    # Add our counts in the count_array fromleft to right.
+    # This makes sure our highest number has the highest index
+    # As we start to recreate our array
+    for i in range(1, len(count_array)):
+        count_array[i] += count_array[i-1]
+
+    # Recreate the array!
+    final_array = [0]*len(arr)
+    for i in range(0, len(arr)):
+        # original array
+        # [5, 8, 3, 6, 2, 2, 9]
+        #
+        # count array before adding
+        # [0, 0, 2, 1, 0, 1, 1, 0, 1, 1]
+        #  ↑  ↑  ↑  ↑  ↑  ↑  ↑  ↑  ↑  ↑
+        #  0  1  2  3  4  5  6  7  8  9
+        #
+        # count array after adding
+        # [0, 0, 2, 3, 3, 4, 5, 5, 6, 6]
+        #  ↑  ↑  ↑  ↑  ↑  ↑  ↑  ↑  ↑  ↑
+        #  0  1  2  3  4  5  6  7  8  9
+        #
+        # final_index for 5 ->
+        #
+        final_index = count_array[arr[i]]-1
+        final_array[final_index] = arr[i]
+        count_array[arr[i]] -= 1
+
+    return final_array
